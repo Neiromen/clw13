@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -53,5 +54,11 @@ public class EventController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{eventId}/attendance")
+    public ResponseEntity<List<Attendance>> getEventAttendances(@PathVariable int eventId){
+        List<Attendance> attendances = attendanceRepository.getAttendancesByEventId(eventId);
+        return ResponseEntity.ok(attendances);
     }
 }
