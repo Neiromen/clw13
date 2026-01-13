@@ -37,4 +37,21 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/{eventId}/attendance")
+    public ResponseEntity<Void> setAttendance(@PathVariable int eventId,
+                                              @RequestParam int memberId,
+                                              @RequestParam String status){
+        Optional<Event> event = eventRepository.findById(eventId);
+        if(event.isPresent()){
+            Attendance attendance = attendanceRepository.getAttendanceByEventIdIsAndMemberId(eventId,memberId);
+            if (attendance!=null){
+                attendance.setStatus(status);
+                attendanceRepository.save(attendance);
+            }
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
